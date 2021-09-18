@@ -32,7 +32,7 @@ public class Contacts {
 
 }
 
-class AddressBookService {
+class addressBookService {
     private ArrayList<Contacts> contactList = new ArrayList<>();
 
     public void addContact(Contacts contact) {
@@ -75,7 +75,7 @@ class UC2 {
     public static void main(String[] args) {
         System.out.println("Welcome to Address Book Program");
         Scanner sc = new Scanner(System.in);
-        AddressBookService book = new AddressBookService();
+        addressBookService book = new addressBookService();
 
         book.addContact(readContact(sc));
 

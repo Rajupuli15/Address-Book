@@ -1,9 +1,10 @@
 package com.bridgelabs;
-import java.util.*;
+
 import java.util.Scanner;
+import java.util.*;
 
-public class ContactName {
 
+public class Delete {
     private String fName;
     private String lName;
     private String address;
@@ -13,8 +14,8 @@ public class ContactName {
     private String phone;
     private String email;
 
-    public ContactName(String fName, String lName, String address, String city, String state, String zip, String phone,
-                         String email) {
+    public Delete(String fName, String lName, String address, String city, String state, String zip, String phone,
+                    String email) {
         this.fName = fName;
         this.lName = lName;
         this.address = address;
@@ -50,7 +51,7 @@ class AddressBookService {
 
     public int searchByName(String name) {
         for (Contacts contact : contactList)
-            if (contact.fName().equalsIgnoreCase(name))
+            if (contact.getfName().equalsIgnoreCase(name))
                 return contactList.indexOf(contact);
         return -1;
     }
@@ -63,8 +64,19 @@ class AddressBookService {
         return true;
     }
 
+    public boolean deleteContact(String name) {
+        int index = searchByName(name);
+        if (index == -1)
+            return false;
+        contactList.remove(index);
+        return true;
+    }
+
     @Override
     public String toString() {
+        if (contactList.isEmpty())
+            return "No contacts found!";
+
         StringBuilder sBuilder = new StringBuilder();
         for (Contacts contacts : contactList)
             sBuilder.append(contacts.toString() + "\n");
@@ -73,7 +85,7 @@ class AddressBookService {
     }
 }
 
-class UC3 {
+public class Delete {
     private static Contacts readContact(Scanner sc) {
         System.out.println("FIRST NAME: ");
         String fName = sc.nextLine();
@@ -96,22 +108,47 @@ class UC3 {
     }
 
     public static void main(String[] args) {
-        System.out.println("Welcome to Address Book Program");
+
         Scanner sc = new Scanner(System.in);
-        addressBookService book = new addressBookService();
+        AddressBookService book = new AddressBookService();
 
-        book.addContact(readContact(sc));
-
-        System.out.println(book.toString());
-
-        System.out.println("Enter name to edit: ");
-        String name = sc.nextLine();
-        if (book.searchByName(name) == -1)
-            System.out.println("NOT FOUND!");
-        else
-            book.editContact(name, readContact(sc));
-        System.out.println(book.toString());
+        while (true) {
+            System.out.println("\n\nWelcome to Address Book Program");
+            System.out.println("1. Add Contact");
+            System.out.println("2. Edit Contact");
+            System.out.println("3. Delete Contact");
+            System.out.println("4. Print Address Book");
+            System.out.print("Your choice: ");
+            int choice = sc.nextInt();
+            sc.nextLine();
+            switch (choice) {
+                case 1:
+                    book.addContact(readContact(sc));
+                    break;
+                case 2:
+                    System.out.println("Enter name to edit: ");
+                    String name = sc.nextLine();
+                    if (book.searchByName(name) == -1)
+                        System.out.println("NOT FOUND!");
+                    else
+                        book.editContact(name, readContact(sc));
+                    break;
+                case 3:
+                    System.out.println("Enter name to delete: ");
+                    name = sc.nextLine();
+                    if (book.searchByName(name) == -1)
+                        System.out.println("NOT FOUND!");
+                    else
+                        book.deleteContact(name);
+                    break;
+                case 4:
+                    System.out.println(book.toString());
+                    break;
+                default:
+                    System.out.println("Invalid Choice!");
+                    break;
+            }
+        }
 
     }
 }
-
